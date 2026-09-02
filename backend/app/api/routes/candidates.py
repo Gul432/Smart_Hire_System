@@ -6,6 +6,7 @@ import shutil
 
 from app.core.database import get_db
 from app.schemas.candidate import CandidateResponse
+from app.services.ai_pipeline_facade import ResumePipelineFacade
 from app.db.repositories.candidate_repo import CandidateRepository
 
 router = APIRouter(prefix="/candidates", tags=["Candidates"])
@@ -17,8 +18,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 async def upload_resume(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
     """
     Upload a PDF/DOCX resume. 
-    Currently, this saves the file and creates a database entry.
-    Later, it will trigger the AI extraction pipeline.
+    Saves the file and extracts raw text using the AI Pipeline Facade.
     """
     file_location = os.path.join(UPLOAD_DIR, file.filename)
     
@@ -26,9 +26,9 @@ async def upload_resume(file: UploadFile = File(...), db: AsyncSession = Depends
     with open(file_location, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
         
-    # Save entry to database
-    repo = CandidateRepository(db)
-    candidate = await repo.create_candidate_entry(file_location, file.filename)
+    # Process using the Facade
+    facade = ResumePipelineFacade(db)
+    candidate = await facade.process_new_resume(file_location, file.filename)
     
     return candidate
 
