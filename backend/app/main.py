@@ -5,10 +5,17 @@ from sqlalchemy import text
 from app.config import settings
 from app.core.database import get_db
 
+# Import our new API routers
+from app.api.routes import jobs, candidates
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
+
+# Register Routers
+app.include_router(jobs.router, prefix=settings.API_V1_STR)
+app.include_router(candidates.router, prefix=settings.API_V1_STR)
 
 @app.get("/health", tags=["Health"])
 async def health_check(db: AsyncSession = Depends(get_db)):
