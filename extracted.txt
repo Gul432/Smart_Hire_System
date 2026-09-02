@@ -1,0 +1,233 @@
+Assigned Date ----------------------------------------------- (5-04-2026)
+Completion date --------------------------------------------  ( )
+Project Title
+SmartHire AI – Resume Screening and Candidate Ranking System
+Project Description
+SmartHire AI is an AI-based web application that helps companies shortlist the best candidates for a job. HR uploads multiple resumes and a job description, and the system automatically analyzes resumes, extracts skills, compares them with the job requirements, and ranks candidates from best to worst.
+The system saves time for companies by reducing manual resume screening and helping HR quickly identify the most suitable candidates.
+Main Features
+Upload multiple resumes in PDF or DOCX format 
+Upload job description 
+Extract text from resumes automatically 
+Identify important skills, education, experience, certifications, and projects 
+Match resume content with job description 
+Give each candidate a matching percentage score 
+Rank candidates from highest to lowest 
+Show missing skills for each candidate 
+Generate shortlist of top candidates 
+Search and filter candidates 
+View candidate profile summary 
+Generate downloadable PDF report for HR 
+Industry-Based Hiring Mode
+The system can have different hiring modes depending on the field or profession selected by HR.
+Examples:
+Doctor Hiring Mode 
+Software Engineer Hiring Mode 
+Teacher Hiring Mode 
+Marketing Hiring Mode 
+Accountant Hiring Mode 
+Designer Hiring Mode 
+When HR selects a specific hiring mode, the system changes its analysis according to that industry.
+For example:
+Doctor Hiring Mode:
+Detect medical degrees like MBBS, BDS, FCPS 
+Check hospital experience 
+Identify medical specialties 
+Check certifications and licenses 
+Detect skills like surgery, patient care, radiology, diagnosis 
+Software Engineer Hiring Mode:
+Detect programming languages 
+Check frameworks and tools 
+Identify GitHub projects 
+Detect databases and cloud skills 
+Check experience in frontend, backend, AI, cyber security, etc. 
+Teacher Hiring Mode:
+Check teaching experience 
+Detect certifications like B.Ed or M.Ed 
+Analyze communication and classroom skills 
+Detect subject specialization 
+Marketing Hiring Mode:
+Detect SEO, social media, branding, ads, content writing 
+Check campaign experience 
+Identify analytical tools like Google Analytics 
+You can add a dropdown called:
+“Select Hiring Category”
+And options can be:
+Healthcare 
+IT and Software 
+Education 
+Finance 
+Marketing 
+Sales 
+HR 
+Engineering 
+The system will then load a separate skills database and separate matching rules for that category.
+For example, in Software Hiring Mode:
+Final Score=0.5(Skill Match)+0.2(Experience)+0.2(Projects)+0.1(Certifications)\text{Final Score} = 0.5(\text{Skill Match}) + 0.2(\text{Experience}) + 0.2(\text{Projects}) + 0.1(\text{Certifications})Final Score=0.5(Skill Match)+0.2(Experience)+0.2(Projects)+0.1(Certifications)
+But in Doctor Hiring Mode:
+Final Score=0.4(Medical Skills)+0.3(Experience)+0.2(Certifications)+0.1(Education)\text{Final Score} = 0.4(\text{Medical Skills}) + 0.3(\text{Experience}) + 0.2(\text{Certifications}) + 0.1(\text{Education})Final Score=0.4(Medical Skills)+0.3(Experience)+0.2(Certifications)+0.1(Education)
+This feature makes your project much stronger because it becomes useful for many industries, not just software companies. It also makes the project look more like a real product instead of a student assignment.
+Advanced AI Features
+NLP-based skill extraction 
+Resume keyword analysis 
+Semantic matching instead of only keyword matching 
+Duplicate resume detection 
+Experience-level prediction 
+Suggested interview questions based on resume 
+Personality insights from writing style 
+Fraud detection for repeated or suspicious content 
+User Roles
+Admin / HR 
+Upload resumes 
+Upload job descriptions 
+View rankings 
+Download reports 
+Manage candidate records 
+View generated Interview questions
+Candidate (Optional in future version) 
+Upload own resume 
+View score 
+See missing skills 
+Get improvement suggestions 
+Technologies Used
+Backend:
+Python 
+Flask or FastAPI 
+Frontend:
+HTML 
+CSS 
+JavaScript 
+Bootstrap 
+Optional: React.js for advanced frontend 
+Database:
+SQLite for beginner version 
+MongoDB or MySQL for advanced version 
+AI / NLP Libraries:
+Pandas 
+NumPy 
+Scikit-learn 
+NLTK 
+spaCy 
+Sentence Transformers 
+TF-IDF Vectorizer 
+Cosine Similarity 
+File Handling:
+PyPDF2 
+pdfplumber 
+python-docx 
+Charts and Dashboard:
+Matplotlib 
+Plotly 
+Chart.js 
+Authentication:
+JWT Authentication 
+Flask Login 
+Deployment:
+Streamlit Cloud 
+Render 
+Railway 
+Vercel for frontend 
+GitHub for code hosting 
+Database Tables
+Users 
+user_id 
+name 
+email 
+password 
+role 
+Candidates 
+candidate_id 
+name 
+email 
+phone 
+education 
+experience 
+skills 
+resume_file 
+score 
+Job Descriptions 
+job_id 
+title 
+required_skills 
+experience_required 
+description 
+Resume Analysis 
+analysis_id 
+candidate_id 
+matched_skills 
+missing_skills 
+match_percentage 
+ranking_position 
+AI Logic
+Step 1: Resume ParsingThe system reads the uploaded resume and extracts text.
+Step 2: Skill ExtractionThe system finds important skills such as Python, Java, SQL, teamwork, leadership, etc.
+Step 3: Job Description AnalysisThe system extracts required skills from the job description.
+Step 4: Matching AlgorithmThe system compares candidate skills with job requirements using:
+Match Score=Matched SkillsRequired Skills×100\text{Match Score} = \frac{\text{Matched Skills}}{\text{Required Skills}} \times 100Match Score=Required SkillsMatched Skills​×100
+Step 5: RankingCandidates are ranked based on: (important)
+Skill match percentage 
+Years of experience 
+Education level 
+Certifications 
+Projects 
+Pages / Screens
+Login Page 
+Dashboard 
+Upload Resume Page 
+Upload Job Description Page 
+Candidate Ranking Page 
+Candidate Details Page 
+Reports Page 
+Admin Profile Page 
+Estimated Development Timeline
+Week 1
+Project planning 
+UI design 
+Database design 
+Create frontend pages 
+Week 2
+Resume upload and parsing 
+PDF and DOCX reading 
+Store resume data in database 
+Week 3
+Job description upload 
+Skill extraction using NLP 
+Matching algorithm 
+Week 4
+Candidate ranking system 
+Dashboard charts 
+Candidate search and filters 
+Week 5
+Authentication system 
+Report generation 
+Final testing 
+Week 6
+Deployment 
+Bug fixing 
+Documentation 
+GitHub upload 
+Total Estimated Time:
+Basic Version: 4–6 weeks 
+Advanced Version: 2–3 months 
+Required Skills for Developer
+Python 
+Flask or FastAPI 
+HTML, CSS, JavaScript 
+Database knowledge 
+NLP basics 
+API integration 
+GitHub 
+Deployment basics 
+Future Improvements
+Video interview analysis 
+Face expression analysis 
+Voice tone analysis 
+LinkedIn profile matching 
+Email notifications 
+ATS integration 
+Multi-language resume support 
+Cyber security candidate screening mode 
+Why this project????  (Why Laiba Why)????
+This project is very good for your resume Gulshan because it combines software engineering, AI, NLP, databases, frontend, backend, and deployment in one complete product. You can display it on your github as well as LinkedIn … Many industries (not only software) can buy this project from you to make their HRsystem easy and fast.
+Good Luck Darling ☺
+Hope you chase it ☺
