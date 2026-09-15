@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, UploadCloud, X, Users, Briefcase, Sparkles, LogOut } from 'lucide-react';
+import { Search, UploadCloud, X, Users, Briefcase, Sparkles, LogOut, Plus, ChevronDown, GraduationCap, Clock, Code, ChevronRight } from 'lucide-react';
 import * as api from './api';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
@@ -19,7 +19,7 @@ function App() {
   const [scoringCandidateId, setScoringCandidateId] = useState(null);
   const [scoreResult, setScoreResult] = useState(null);
   const [candidateScores, setCandidateScores] = useState({}); // { candidateId_jobId: scoreData }
-
+  const [isCreateJobOpen, setIsCreateJobOpen] = useState(false);
   // Filter & Search states
   const [searchQuery, setSearchQuery] = useState('');
   const [experienceFilter, setExperienceFilter] = useState('all'); // 'all', '1', '3', '5'
@@ -620,48 +620,79 @@ function App() {
               </div>
 
               <div className="lg:col-start-3">
-                <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl px-6 py-6 sticky top-6">
-                  <h2 className="text-base font-semibold leading-7 text-gray-900 mb-4">Create New Position</h2>
+                <div className="bg-white/90 backdrop-blur-sm shadow-lg ring-1 ring-gray-900/5 sm:rounded-3xl p-8 relative overflow-hidden transition-all">
+                  {/* Decorative blur blob */}
+                  <div className="absolute -top-10 -right-10 w-40 h-40 bg-teal-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                  <h2 className="text-xl font-bold leading-7 text-gray-900 mb-6 flex items-center gap-2">
+                    <Plus className="w-5 h-5 text-teal-600" />
+                    New Requisition
+                  </h2>
                   
-                  <div className="mb-5">
-                    <p className="text-xs font-medium text-gray-500 mb-2">Templates:</p>
-                    <div className="flex flex-col gap-1.5">
+                  <div className="mb-6">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Quick Templates</p>
+                    <div className="flex flex-wrap gap-2">
                       {jobTemplates.map((t, idx) => (
-                        <button key={idx} type="button" onClick={() => setNewJob(t)} className="text-left text-xs font-medium text-teal-600 hover:text-teal-500 truncate">
-                          + {t.title}
+                        <button key={idx} type="button" onClick={() => setNewJob(t)} className="inline-flex items-center gap-1 text-xs font-medium text-teal-700 bg-teal-50 px-3 py-1.5 rounded-full hover:bg-teal-100 transition-colors border border-teal-100">
+                          <Plus className="w-3 h-3" /> {t.title}
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  <form onSubmit={handleCreateJob} className="space-y-4">
+                  <form onSubmit={handleCreateJob} className="space-y-5">
                     <div>
-                      <label className="block text-sm font-medium leading-6 text-gray-900">Job Title</label>
-                      <input type="text" required value={newJob.title} onChange={e => setNewJob({...newJob, title: e.target.value})}
-                        className="mt-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 px-3"
-                      />
+                      <label className="block text-sm font-semibold leading-6 text-gray-900 mb-1">Job Title</label>
+                      <div className="relative">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                          <Briefcase className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input type="text" required value={newJob.title} onChange={e => setNewJob({...newJob, title: e.target.value})}
+                          className="block w-full rounded-xl border-0 py-2.5 pl-10 text-gray-900 bg-gray-50 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-teal-600 focus:bg-white sm:text-sm sm:leading-6 transition-all"
+                          placeholder="e.g. Senior Frontend Engineer"
+                        />
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium leading-6 text-gray-900">Department / Industry</label>
-                      <select value={newJob.industry_category} onChange={e => setNewJob({...newJob, industry_category: e.target.value})}
-                        className="mt-1 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-teal-600 sm:text-sm sm:leading-6"
-                      >
-                        <option value="Software">Engineering</option>
-                        <option value="Healthcare">Healthcare</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="Finance">Finance</option>
-                      </select>
+                      <label className="block text-sm font-semibold leading-6 text-gray-900 mb-1">Department</label>
+                      <div className="relative">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                          <Users className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <select value={newJob.industry_category} onChange={e => setNewJob({...newJob, industry_category: e.target.value})}
+                          className="block w-full rounded-xl border-0 py-2.5 pl-10 pr-10 text-gray-900 bg-gray-50 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-teal-600 focus:bg-white sm:text-sm sm:leading-6 transition-all appearance-none"
+                        >
+                          <option value="Software">Engineering</option>
+                          <option value="Healthcare">Healthcare</option>
+                          <option value="Marketing">Marketing</option>
+                          <option value="Finance">Finance</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                          <ChevronDown className="h-4 w-4 text-gray-400" />
+                        </div>
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium leading-6 text-gray-900">Description & Requirements</label>
-                      <textarea required rows={4} value={newJob.description} onChange={e => setNewJob({...newJob, description: e.target.value})}
-                        className="mt-1 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 px-3"
-                      />
+                      <label className="block text-sm font-semibold leading-6 text-gray-900 mb-1">Requirements & Skills</label>
+                      <div className="relative">
+                        <div className="pointer-events-none absolute top-3 left-3">
+                          <Code className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <textarea required rows={4} value={newJob.description} onChange={e => setNewJob({...newJob, description: e.target.value})}
+                          className="block w-full rounded-xl border-0 py-2.5 pl-10 text-gray-900 bg-gray-50 ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-teal-600 focus:bg-white sm:text-sm sm:leading-6 transition-all resize-none"
+                          placeholder="List required technical skills, experience, and responsibilities..."
+                        />
+                      </div>
                     </div>
                     <button type="submit" disabled={isCreatingJob}
-                      className="flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 disabled:opacity-50 transition-colors"
+                      className="mt-4 flex w-full justify-center items-center gap-2 rounded-xl bg-gray-900 px-4 py-3 text-sm font-semibold text-white shadow-md hover:bg-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 disabled:opacity-50 transition-all group"
                     >
-                      {isCreatingJob ? 'Saving...' : 'Publish Position'}
+                      {isCreatingJob ? 'Processing...' : (
+                        <>
+                          Publish Requisition
+                          <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
                     </button>
                   </form>
                 </div>
