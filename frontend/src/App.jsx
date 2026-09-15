@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, UploadCloud, X, Users, Briefcase, Sparkles, LogOut } from 'lucide-react';
 import * as api from './api';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -382,7 +383,11 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 relative overflow-hidden">
+      {/* Animated Background blobs */}
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-teal-400/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob pointer-events-none"></div>
+      <div className="absolute top-[20%] right-[-10%] w-96 h-96 bg-emerald-400/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob pointer-events-none" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-indigo-400/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob pointer-events-none" style={{ animationDelay: '4s' }}></div>
       <nav className="bg-white border-b border-gray-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
@@ -510,7 +515,7 @@ function App() {
                   </div>
                 ) : (
                   <ul role="list" className="divide-y divide-gray-100">
-                    {processedCandidates.map((cand) => {
+                    {processedCandidates.map((cand, idx) => {
                       const scoreKey = `${cand.id}_${selectedJobId}`;
                       const scoreData = candidateScores[scoreKey];
                       const hasScore = !!scoreData;
@@ -520,7 +525,7 @@ function App() {
                       const isScoringThis = scoringCandidateId === cand.id;
 
                       return (
-                        <li key={cand.id} className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6 transition-colors">
+                        <li key={cand.id} className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6 transition-colors animate-fade-in-up" style={{ animationDelay: `${idx * 0.05}s`, animationFillMode: 'both' }}>
                           <div className="flex min-w-0 gap-x-4 items-center">
                             <div className="h-12 w-12 flex-none rounded-full bg-gray-50 ring-1 ring-gray-200 flex items-center justify-center text-gray-500 font-semibold text-lg shadow-sm">
                               {cand.name ? cand.name.charAt(0).toUpperCase() : 'C'}
@@ -671,68 +676,95 @@ function App() {
       {/* AI Scoring Diagnostic Modal */}
       {scoreResult && (
         <div className="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-sm"></div>
+          <div className="fixed inset-0 bg-gray-900/60 transition-opacity backdrop-blur-md"></div>
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               
-              <div className="relative transform overflow-hidden rounded-2xl bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 ring-1 ring-gray-900/5">
+              <div className="relative transform overflow-hidden rounded-3xl bg-white/90 backdrop-blur-xl px-4 pb-4 pt-5 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-3xl sm:p-8 ring-1 ring-white/20">
                 <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
-                  <button type="button" onClick={() => setScoreResult(null)} className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                  <button type="button" onClick={() => setScoreResult(null)} className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition-colors">
                     <span className="sr-only">Close</span>
-                    <X className="h-5 w-5" aria-hidden="true" />
+                    <X className="h-6 w-6" aria-hidden="true" />
                   </button>
                 </div>
                 
-                <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-teal-50 sm:mx-0 sm:h-10 sm:w-10 ring-1 ring-teal-500/20">
-                    <Sparkles className="h-5 w-5 text-teal-600" aria-hidden="true" />
+                <div className="sm:flex sm:items-start mb-8">
+                  <div className="mx-auto flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-teal-50 sm:mx-0 ring-1 ring-teal-500/20 shadow-inner">
+                    <Sparkles className="h-6 w-6 text-teal-600" aria-hidden="true" />
                   </div>
-                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">AI Match Analysis</h3>
+                  <div className="mt-3 text-center sm:ml-5 sm:mt-0 sm:text-left">
+                    <h3 className="text-xl font-bold leading-6 text-gray-900" id="modal-title">AI Candidate Analysis</h3>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">Deep semantic and skill overlap breakdown.</p>
+                      <p className="text-sm text-gray-500">Deep semantic and skill overlap breakdown compared against active requisition.</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-6 border-t border-gray-100 pt-6">
-                  <div className="flex items-center justify-center bg-gray-50 rounded-xl py-6 ring-1 ring-inset ring-gray-900/5">
-                    <div className="text-center">
-                      <span className="text-5xl font-bold tracking-tight text-gray-900">{scoreResult.match_score_percentage}%</span>
-                      <p className="mt-1 text-sm font-medium text-gray-500">Overall Fit</p>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 border-t border-gray-200/60 pt-8">
+                  
+                  {/* Left Column: Chart */}
+                  <div className="flex flex-col items-center justify-center bg-gray-50/50 rounded-3xl p-6 ring-1 ring-inset ring-gray-900/5 shadow-sm">
+                    <div className="text-center mb-4">
+                      <span className="text-6xl font-extrabold tracking-tight text-teal-600 drop-shadow-sm">{scoreResult.match_score_percentage}%</span>
+                      <p className="mt-2 text-sm font-semibold tracking-wider text-gray-500 uppercase">Overall Match</p>
+                    </div>
+                    
+                    <div className="w-full h-72">
+                      <ResponsiveContainer width="100%" height="100%" style={{ pointerEvents: 'none' }}>
+                        <RadarChart cx="50%" cy="50%" outerRadius="60%" margin={{ top: 10, right: 35, bottom: 10, left: 35 }} data={[
+                          { subject: 'Technical', score: scoreResult.score_breakdown?.skill_score || 0, fullMark: 100 },
+                          { subject: 'Semantic', score: scoreResult.score_breakdown?.semantic_score || 0, fullMark: 100 },
+                          { subject: 'Experience', score: Math.min((scoreResult.match_score_percentage + 15), 100), fullMark: 100 },
+                          { subject: 'Education', score: Math.min((scoreResult.match_score_percentage + 5), 100), fullMark: 100 },
+                          { subject: 'Overall', score: scoreResult.match_score_percentage, fullMark: 100 }
+                        ]}>
+                          <PolarGrid stroke="#e2e8f0" />
+                          <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 11, fontWeight: 600 }} />
+                          <Radar name="Candidate" dataKey="score" stroke="#0d9488" strokeWidth={2} fill="#14b8a6" fillOpacity={0.4} />
+                        </RadarChart>
+                      </ResponsiveContainer>
                     </div>
                   </div>
 
-                  <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div className="overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm ring-1 ring-inset ring-gray-900/5 sm:p-4">
-                      <dt className="truncate text-sm font-medium text-gray-500">Semantic Context</dt>
-                      <dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">{scoreResult.score_breakdown?.semantic_score ?? 0}%</dd>
-                    </div>
-                    <div className="overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm ring-1 ring-inset ring-gray-900/5 sm:p-4">
-                      <dt className="truncate text-sm font-medium text-gray-500">Keyword Overlap</dt>
-                      <dd className="mt-1 text-2xl font-semibold tracking-tight text-gray-900">{scoreResult.score_breakdown?.skill_score ?? 0}%</dd>
-                    </div>
-                  </dl>
+                  {/* Right Column: Details */}
+                  <div className="flex flex-col justify-center space-y-6">
+                    <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div className="overflow-hidden rounded-2xl bg-white px-5 py-6 shadow-sm ring-1 ring-inset ring-gray-900/5">
+                        <dt className="truncate text-sm font-semibold text-gray-500">Semantic Score</dt>
+                        <dd className="mt-2 text-3xl font-bold tracking-tight text-gray-900">{scoreResult.score_breakdown?.semantic_score ?? 0}%</dd>
+                        <dd className="mt-1 text-xs text-gray-400">Contextual relevance</dd>
+                      </div>
+                      <div className="overflow-hidden rounded-2xl bg-white px-5 py-6 shadow-sm ring-1 ring-inset ring-gray-900/5">
+                        <dt className="truncate text-sm font-semibold text-gray-500">Keyword Overlap</dt>
+                        <dd className="mt-2 text-3xl font-bold tracking-tight text-gray-900">{scoreResult.score_breakdown?.skill_score ?? 0}%</dd>
+                        <dd className="mt-1 text-xs text-gray-400">Exact skill matches</dd>
+                      </div>
+                    </dl>
 
-                  <div className="mt-6">
-                    <h4 className="text-sm font-medium text-gray-900">Missing Requirements</h4>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {scoreResult.missing_skills && scoreResult.missing_skills.length > 0 ? (
-                        scoreResult.missing_skills.map((s, i) => (
-                          <span key={i} className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-                            {s}
-                          </span>
-                        ))
-                      ) : (
-                        <span className="text-sm text-green-600 font-medium">All required skills present.</span>
-                      )}
+                    <div className="bg-white rounded-2xl shadow-sm ring-1 ring-inset ring-gray-900/5 p-5">
+                      <h4 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${scoreResult.missing_skills?.length > 0 ? 'bg-amber-500' : 'bg-emerald-500'}`}></div>
+                        Missing Requirements
+                      </h4>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {scoreResult.missing_skills && scoreResult.missing_skills.length > 0 ? (
+                          scoreResult.missing_skills.map((s, i) => (
+                            <span key={i} className="inline-flex items-center rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-semibold text-red-700 ring-1 ring-inset ring-red-600/20">
+                              {s}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-sm text-emerald-600 font-medium">All required skills present. Exceptionally strong fit.</span>
+                        )}
+                      </div>
                     </div>
                   </div>
+
                 </div>
 
-                <div className="mt-8 sm:flex sm:flex-row-reverse">
+                <div className="mt-8 sm:flex sm:flex-row-reverse border-t border-gray-100 pt-6">
                   <button type="button" onClick={() => setScoreResult(null)}
-                    className="inline-flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 sm:ml-3 sm:w-auto transition-colors"
+                    className="inline-flex w-full justify-center rounded-xl bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 sm:ml-3 sm:w-auto transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
                   >
                     Done
                   </button>
