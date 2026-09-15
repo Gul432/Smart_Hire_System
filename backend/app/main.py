@@ -1,19 +1,30 @@
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 
 from app.config import settings
 from app.core.database import get_db
 
-# Import our new API routers
-from app.api.routes import jobs, candidates
+# Import our API routers
+from app.api.routes import jobs, candidates, auth
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
+# Configure CORS so React (port 5173) can talk to FastAPI (port 8080)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # In production, change to ["http://localhost:5173"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Register Routers
+app.include_router(auth.router, prefix=settings.API_V1_STR)
 app.include_router(jobs.router, prefix=settings.API_V1_STR)
 app.include_router(candidates.router, prefix=settings.API_V1_STR)
 
@@ -38,4 +49,4 @@ async def health_check(db: AsyncSession = Depends(get_db)):
 # Entrypoint for running with Uvicorn (dev only)
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8080, reload=True)

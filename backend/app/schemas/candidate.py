@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Any
 
 class CandidateResponse(BaseModel):
     id: int
@@ -8,6 +8,15 @@ class CandidateResponse(BaseModel):
     phone: Optional[str]
     resume_file_path: str
     skills: List[str] = []
+    education: List[Any] = []
+    experience: List[Any] = []
     
     class Config:
         from_attributes = True
+
+class BulkUploadResponse(BaseModel):
+    total: int
+    successful: int
+    failed: int
+    candidates: List[CandidateResponse] = []
+    errors: List[str] = []
